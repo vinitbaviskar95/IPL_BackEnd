@@ -1,0 +1,10 @@
+C:\Users\Admin\Documents\Visual Studio 2015\Projects\Final_Project\MyTestingApp\bin\Debug\MyTestingApp.dll
+C:\Users\Admin\Documents\Visual Studio 2015\Projects\Final_Project\MyTestingApp\bin\Debug\MyTestingApp.pdb
+C:\Users\Admin\Documents\Visual Studio 2015\Projects\Final_Project\MyTestingApp\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Admin\Documents\Visual Studio 2015\Projects\Final_Project\MyTestingApp\bin\Debug\MyLoggerLib.dll
+C:\Users\Admin\Documents\Visual Studio 2015\Projects\Final_Project\MyTestingApp\bin\Debug\MySecurityLib.dll
+C:\Users\Admin\Documents\Visual Studio 2015\Projects\Final_Project\MyTestingApp\bin\Debug\MyLoggerLib.pdb
+C:\Users\Admin\Documents\Visual Studio 2015\Projects\Final_Project\MyTestingApp\bin\Debug\MySecurityLib.pdb
+C:\Users\Admin\Documents\Visual Studio 2015\Projects\Final_Project\MyTestingApp\obj\Debug\MyTestingApp.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Documents\Visual Studio 2015\Projects\Final_Project\MyTestingApp\obj\Debug\MyTestingApp.dll
+C:\Users\Admin\Documents\Visual Studio 2015\Projects\Final_Project\MyTestingApp\obj\Debug\MyTestingApp.pdb

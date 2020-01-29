@@ -1,0 +1,587 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FinalProject_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="T_Bid">
+          <Key>
+            <PropertyRef Name="BidId" />
+          </Key>
+          <Property Name="BidId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_ErrorLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Source" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Method" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ErrorOn" Type="datetime" Nullable="false" />
+          <Property Name="Message" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="StackTrace" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_OTP_Details">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="OTP" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="GeneratedOn" Type="datetime" Nullable="false" />
+          <Property Name="ValidTill" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_PasswordHistoryLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ChangedOn" Type="datetime" Nullable="false" />
+          <Property Name="OldPassword" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="NewPassword" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Players">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Matches" Type="int" />
+          <Property Name="Runs" Type="int" />
+          <Property Name="Wickets" Type="int" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="BasePrice" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Teams">
+          <Key>
+            <PropertyRef Name="TeamId" />
+          </Key>
+          <Property Name="TeamId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TeamName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmailId" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="MobileNo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IsOnline" Type="bit" Nullable="false" />
+          <Property Name="IsLocked" Type="bit" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Roles_Users">
+          <End Role="T_Roles" Type="Self.T_Roles" Multiplicity="1" />
+          <End Role="T_Users" Type="Self.T_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="T_Users">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PlayerId_Bid">
+          <End Role="T_Players" Type="Self.T_Players" Multiplicity="1" />
+          <End Role="T_Bid" Type="Self.T_Bid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="T_Bid">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_UserId_Bid">
+          <End Role="T_Users" Type="Self.T_Users" Multiplicity="1" />
+          <End Role="T_Bid" Type="Self.T_Bid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_Bid">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_UserId_Password">
+          <End Role="T_Users" Type="Self.T_Users" Multiplicity="1" />
+          <End Role="T_PasswordHistoryLog" Type="Self.T_PasswordHistoryLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_PasswordHistoryLog">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_UserId_T_Teams">
+          <End Role="T_Users" Type="Self.T_Users" Multiplicity="1" />
+          <End Role="T_Teams" Type="Self.T_Teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_Teams">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserId_OTP">
+          <End Role="T_Users" Type="Self.T_Users" Multiplicity="1" />
+          <End Role="T_OTP_Details" Type="Self.T_OTP_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_OTP_Details">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="proc_AddRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoleName" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="proc_AddUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmailId" Type="varchar" Mode="In" />
+          <Parameter Name="Name" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="MobileNo" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="proc_Login" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmailId" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="proc_ModifyRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoleId" Type="int" Mode="In" />
+          <Parameter Name="RoleName" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="proc_RemoveRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoleId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="FinalProject_DBModelStoreContainer">
+          <EntitySet Name="T_Bid" EntityType="Self.T_Bid" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_ErrorLogs" EntityType="Self.T_ErrorLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_OTP_Details" EntityType="Self.T_OTP_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_PasswordHistoryLog" EntityType="Self.T_PasswordHistoryLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Players" EntityType="Self.T_Players" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Roles" EntityType="Self.T_Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Teams" EntityType="Self.T_Teams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Users" EntityType="Self.T_Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Roles_Users" Association="Self.FK_Roles_Users">
+            <End Role="T_Roles" EntitySet="T_Roles" />
+            <End Role="T_Users" EntitySet="T_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PlayerId_Bid" Association="Self.FK_T_PlayerId_Bid">
+            <End Role="T_Players" EntitySet="T_Players" />
+            <End Role="T_Bid" EntitySet="T_Bid" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_UserId_Bid" Association="Self.FK_T_UserId_Bid">
+            <End Role="T_Users" EntitySet="T_Users" />
+            <End Role="T_Bid" EntitySet="T_Bid" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_UserId_Password" Association="Self.FK_T_UserId_Password">
+            <End Role="T_Users" EntitySet="T_Users" />
+            <End Role="T_PasswordHistoryLog" EntitySet="T_PasswordHistoryLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_UserId_T_Teams" Association="Self.FK_T_UserId_T_Teams">
+            <End Role="T_Users" EntitySet="T_Users" />
+            <End Role="T_Teams" EntitySet="T_Teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserId_OTP" Association="Self.FK_UserId_OTP">
+            <End Role="T_Users" EntitySet="T_Users" />
+            <End Role="T_OTP_Details" EntitySet="T_OTP_Details" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FinalProject_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="T_ErrorLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Source" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Method" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ErrorOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Message" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StackTrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_OTP_Details">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="OTP" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GeneratedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="T_Users" Relationship="Self.FK_UserId_OTP" FromRole="T_OTP_Details" ToRole="T_Users" />
+          <Property Name="ValidTill" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="T_PasswordHistoryLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ChangedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OldPassword" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NewPassword" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="T_Users" Relationship="Self.FK_T_UserId_Password" FromRole="T_PasswordHistoryLog" ToRole="T_Users" />
+        </EntityType>
+        <EntityType Name="T_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="T_Users" Relationship="Self.FK_Roles_Users" FromRole="T_Roles" ToRole="T_Users" />
+        </EntityType>
+        <EntityType Name="T_Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmailId" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MobileNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsOnline" Type="Boolean" Nullable="false" />
+          <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="T_OTP_Details" Relationship="Self.FK_UserId_OTP" FromRole="T_Users" ToRole="T_OTP_Details" />
+          <NavigationProperty Name="T_PasswordHistoryLog" Relationship="Self.FK_T_UserId_Password" FromRole="T_Users" ToRole="T_PasswordHistoryLog" />
+          <NavigationProperty Name="T_Roles" Relationship="Self.FK_Roles_Users" FromRole="T_Users" ToRole="T_Roles" />
+          <NavigationProperty Name="T_Teams" Relationship="FinalProject_DBModel.FK_T_UserId_T_Teams" FromRole="T_Users" ToRole="T_Teams" />
+          <NavigationProperty Name="T_Bid" Relationship="FinalProject_DBModel.FK_T_UserId_Bid" FromRole="T_Users" ToRole="T_Bid" />
+        </EntityType>
+        <Association Name="FK_UserId_OTP">
+          <End Role="T_Users" Type="Self.T_Users" Multiplicity="1" />
+          <End Role="T_OTP_Details" Type="Self.T_OTP_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_OTP_Details">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_UserId_Password">
+          <End Role="T_Users" Type="Self.T_Users" Multiplicity="1" />
+          <End Role="T_PasswordHistoryLog" Type="Self.T_PasswordHistoryLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_PasswordHistoryLog">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roles_Users">
+          <End Role="T_Roles" Type="Self.T_Roles" Multiplicity="1" />
+          <End Role="T_Users" Type="Self.T_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="T_Users">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FinalProject_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="T_ErrorLogs" EntityType="Self.T_ErrorLogs" />
+          <EntitySet Name="T_OTP_Details" EntityType="Self.T_OTP_Details" />
+          <EntitySet Name="T_PasswordHistoryLog" EntityType="Self.T_PasswordHistoryLog" />
+          <EntitySet Name="T_Roles" EntityType="Self.T_Roles" />
+          <EntitySet Name="T_Users" EntityType="Self.T_Users" />
+          <AssociationSet Name="FK_UserId_OTP" Association="Self.FK_UserId_OTP">
+            <End Role="T_Users" EntitySet="T_Users" />
+            <End Role="T_OTP_Details" EntitySet="T_OTP_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_UserId_Password" Association="Self.FK_T_UserId_Password">
+            <End Role="T_Users" EntitySet="T_Users" />
+            <End Role="T_PasswordHistoryLog" EntitySet="T_PasswordHistoryLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roles_Users" Association="Self.FK_Roles_Users">
+            <End Role="T_Roles" EntitySet="T_Roles" />
+            <End Role="T_Users" EntitySet="T_Users" />
+          </AssociationSet>
+          <FunctionImport Name="proc_AddRole">
+          <Parameter Name="RoleName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="proc_ModifyRole">
+            <Parameter Name="RoleId" Mode="In" Type="Int32" />
+            <Parameter Name="RoleName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="proc_RemoveRole">
+          <Parameter Name="RoleId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="proc_Login" ReturnType="Collection(FinalProject_DBModel.proc_Login_Result)">
+            <Parameter Name="EmailId" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="proc_AddUser">
+            <Parameter Name="EmailId" Mode="In" Type="String" />
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="MobileNo" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="T_Teams" EntityType="FinalProject_DBModel.T_Teams" />
+          <AssociationSet Name="FK_T_UserId_T_Teams" Association="FinalProject_DBModel.FK_T_UserId_T_Teams">
+            <End Role="T_Users" EntitySet="T_Users" />
+            <End Role="T_Teams" EntitySet="T_Teams" />
+          </AssociationSet>
+          <EntitySet Name="T_Players" EntityType="FinalProject_DBModel.T_Players" />
+          <EntitySet Name="T_Bid" EntityType="FinalProject_DBModel.T_Bid" />
+          <AssociationSet Name="FK_T_PlayerId_Bid" Association="FinalProject_DBModel.FK_T_PlayerId_Bid">
+            <End Role="T_Players" EntitySet="T_Players" />
+            <End Role="T_Bid" EntitySet="T_Bid" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_UserId_Bid" Association="FinalProject_DBModel.FK_T_UserId_Bid">
+            <End Role="T_Users" EntitySet="T_Users" />
+            <End Role="T_Bid" EntitySet="T_Bid" />
+          </AssociationSet>
+        </EntityContainer>
+        <ComplexType Name="proc_Login_Result">
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="EmailId" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="MobileNo" Nullable="false" MaxLength="10" />
+          <Property Type="Boolean" Name="IsOnline" Nullable="false" />
+          <Property Type="Boolean" Name="IsLocked" Nullable="false" />
+          <Property Type="Int32" Name="RoleId" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="T_Teams">
+          <Key>
+            <PropertyRef Name="TeamId" />
+          </Key>
+          <Property Name="TeamId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeamName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="T_Users" Relationship="FinalProject_DBModel.FK_T_UserId_T_Teams" FromRole="T_Teams" ToRole="T_Users" />
+        </EntityType>
+        <Association Name="FK_T_UserId_T_Teams">
+          <End Type="FinalProject_DBModel.T_Users" Role="T_Users" Multiplicity="1" />
+          <End Type="FinalProject_DBModel.T_Teams" Role="T_Teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_Teams">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="T_Players">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Matches" Type="Int32" />
+          <Property Name="Runs" Type="Int32" />
+          <Property Name="Wickets" Type="Int32" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="BasePrice" Type="Double" Nullable="false" />
+          <NavigationProperty Name="T_Bid" Relationship="FinalProject_DBModel.FK_T_PlayerId_Bid" FromRole="T_Players" ToRole="T_Bid" />
+        </EntityType>
+        <EntityType Name="T_Bid">
+          <Key>
+            <PropertyRef Name="BidId" />
+          </Key>
+          <Property Name="BidId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="T_Players" Relationship="FinalProject_DBModel.FK_T_PlayerId_Bid" FromRole="T_Bid" ToRole="T_Players" />
+          <NavigationProperty Name="T_Users" Relationship="FinalProject_DBModel.FK_T_UserId_Bid" FromRole="T_Bid" ToRole="T_Users" />
+        </EntityType>
+        <Association Name="FK_T_PlayerId_Bid">
+          <End Type="FinalProject_DBModel.T_Players" Role="T_Players" Multiplicity="1" />
+          <End Type="FinalProject_DBModel.T_Bid" Role="T_Bid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="T_Bid">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_UserId_Bid">
+          <End Type="FinalProject_DBModel.T_Users" Role="T_Users" Multiplicity="1" />
+          <End Type="FinalProject_DBModel.T_Bid" Role="T_Bid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="T_Bid">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FinalProject_DBModelStoreContainer" CdmEntityContainer="FinalProject_DBEntities">
+          <EntitySetMapping Name="T_ErrorLogs">
+            <EntityTypeMapping TypeName="FinalProject_DBModel.T_ErrorLogs">
+              <MappingFragment StoreEntitySet="T_ErrorLogs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="Method" ColumnName="Method" />
+                <ScalarProperty Name="ErrorOn" ColumnName="ErrorOn" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_OTP_Details">
+            <EntityTypeMapping TypeName="FinalProject_DBModel.T_OTP_Details">
+              <MappingFragment StoreEntitySet="T_OTP_Details">
+                <ScalarProperty Name="ValidTill" ColumnName="ValidTill" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="GeneratedOn" ColumnName="GeneratedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_PasswordHistoryLog">
+            <EntityTypeMapping TypeName="FinalProject_DBModel.T_PasswordHistoryLog">
+              <MappingFragment StoreEntitySet="T_PasswordHistoryLog">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ChangedOn" ColumnName="ChangedOn" />
+                <ScalarProperty Name="OldPassword" ColumnName="OldPassword" />
+                <ScalarProperty Name="NewPassword" ColumnName="NewPassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Roles">
+            <EntityTypeMapping TypeName="FinalProject_DBModel.T_Roles">
+              <MappingFragment StoreEntitySet="T_Roles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Users">
+            <EntityTypeMapping TypeName="FinalProject_DBModel.T_Users">
+              <MappingFragment StoreEntitySet="T_Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="proc_AddRole" FunctionName="FinalProject_DBModel.Store.proc_AddRole" />
+          <FunctionImportMapping FunctionImportName="proc_ModifyRole" FunctionName="FinalProject_DBModel.Store.proc_ModifyRole" />
+          <FunctionImportMapping FunctionImportName="proc_RemoveRole" FunctionName="FinalProject_DBModel.Store.proc_RemoveRole" />
+          <FunctionImportMapping FunctionImportName="proc_Login" FunctionName="FinalProject_DBModel.Store.proc_Login">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FinalProject_DBModel.proc_Login_Result">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="proc_AddUser" FunctionName="FinalProject_DBModel.Store.proc_AddUser" />
+          <EntitySetMapping Name="T_Teams">
+            <EntityTypeMapping TypeName="FinalProject_DBModel.T_Teams">
+              <MappingFragment StoreEntitySet="T_Teams">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="TeamId" ColumnName="TeamId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Players">
+            <EntityTypeMapping TypeName="FinalProject_DBModel.T_Players">
+              <MappingFragment StoreEntitySet="T_Players">
+                <ScalarProperty Name="BasePrice" ColumnName="BasePrice" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Wickets" ColumnName="Wickets" />
+                <ScalarProperty Name="Runs" ColumnName="Runs" />
+                <ScalarProperty Name="Matches" ColumnName="Matches" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Bid">
+            <EntityTypeMapping TypeName="FinalProject_DBModel.T_Bid">
+              <MappingFragment StoreEntitySet="T_Bid">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="BidId" ColumnName="BidId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
